@@ -227,8 +227,8 @@
                 text += " hr ";
             }
 
-            if(Math.floor(minutes) > 0) {
-                var minDiff =  Math.floor(minutes) - (Math.floor(hours) * 60);
+            var minDiff =  Math.floor(minutes) - (Math.floor(hours) * 60);
+            if(minDiff > 0) {
                 if (minDiff < 10) {
                     text += "0";
                     text += minDiff;
@@ -238,8 +238,8 @@
                 text += " min ";
             }
 
-            if(Math.floor(s.duration()) > 0 ) {
-                var secDiff = s.duration() - (Math.floor(minutes) * 60);
+            var secDiff = s.duration() - (Math.floor(minutes) * 60);
+            if(secDiff > 0) {
                 if(secDiff <10) {
                     text += "0";
                     text += secDiff;
