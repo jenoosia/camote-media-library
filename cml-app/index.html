@@ -20,19 +20,26 @@
 
 <div class="ui grid container cml-header">
     <div class="row">
-        <div class="ten wide column">
-            <h1>Changi Media Library</h1>
-        </div>
-        <div class="six wide column">
-            <i class="plane icon"></i>
-            Your Flight
-        </div>
-    </div>
-    <div class="row">
-        <div class="ui secondary pointing three item menu">
-            <a class="active item">Home</a>
-            <a class="item">Watch</a>
-            <a class="item">Read</a>
+        <div class="sixteen wide column">
+            <div class="ui secondary menu">
+                <div class="ui item">
+                    <h1 class="ui header">
+                        <span class="ui purple header">CH</span>angi <span class="ui purple header">A</span>irport
+                        <span class="ui purple header">M</span>edia <span class="ui purple header">P</span>ortal
+                    </h1>
+                </div>
+                <div class="ui right item">
+                    <div class="ui statistic">
+                        <div class="value"><i class="plane icon"></i></div>
+                        <div class="label">Your Flight</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui secondary pointing three item menu">
+                <a class="active item">Home</a>
+                <a class="item">Watch</a>
+                <a class="item">Read</a>
+            </div>
         </div>
     </div>
 </div>
@@ -42,15 +49,21 @@
     <!-- Splash Page -->
     <div class="row" data-bind="visible: state() == 'Welcome'">
         <div class="sixteen wide column">
-            <p>Welcome to Changi Media Library!</p>
-            <p>Enter your flight no. to get an experience tailored for you.</p>
+            <div class="">
+                <h2 class="ui header">
+                    There's something here for every traveler.
+                </h2>
 
-            <form class="ui form">
-                <div class="field">
-                    <input type="text" placeholder="Flight No.">
+                <div class="ui segment" style="width: 50%; margin: 0 auto;">
+                    <h3 class="ui header">First, what's your Flight Number?</h3>
+                    <form class="ui form" style="text-align: center;">
+                        <div class="field">
+                            <input type="text" placeholder="Flight No.">
+                        </div>
+                        <button class="ui purple button" data-bind="click: doUseFlightNumber">Go</button>
+                    </form>
                 </div>
-                <buton class="ui purple button" data-bind="click: doUseFlightNumber">Go</buton>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -161,6 +174,10 @@
 
     <div class="row" data-bind="visible: state() == 'EbookViewer'">
         <div class="sixteen wide column">
+            <button class="ui orange basic button" data-bind="click: doEbookViewerBack">
+                <i class="chevron left icon"></i>
+                Go Back
+            </button>
             <div id="outerContainer">
                 <div id="mainContainer">
                     <div class="toolbar">
@@ -241,6 +258,20 @@
                     </div>
                 </div> <!-- mainContainer -->
             </div> <!-- outerContainer -->
+
+
+            <div class="ui segment">
+                <!-- ko if: ebookViewer.relatedResource() != null -->
+                <h2 class="ui header" data-bind="text: ebookViewer.relatedResource().name()"></h2>
+                <p class="ui content" data-bind="text: ebookViewer.relatedResource().duration()"></p>
+                <p class="ui content" data-bind="text: ebookViewer.relatedResource().description()"></p>
+                <!-- /ko -->
+            </div>
+
+            <button class="ui orange basic button" data-bind="click: doEbookViewerBack">
+                <i class="chevron left icon"></i>
+                Go Back
+            </button>
         </div>
     </div>
 

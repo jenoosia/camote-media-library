@@ -55,6 +55,7 @@
         s.recommendedResourcesView = ko.observableArray([]);
 
         s.videoPlayer = new cml.VideoPlayerVm();
+        s.ebookViewer = new cml.EbookViewerVm();
 
         s.doUseFlightNumber = function() {
             //TODO Integration with API
@@ -91,12 +92,17 @@
                 s.state(cml.Const.State.VideoPlayer);
                 s.videoPlayer.init(res);
             } else {
-                //TODO Ebook Viewer
+                s.state(cml.Const.State.EbookViewer);
+                s.ebookViewer.init(res);
             }
         };
 
         s.doVideoPlayerBack = function() {
             s.videoPlayer.destroy();
+            s.state(cml.Const.State.Personalised);
+        };
+        s.doEbookViewerBack = function() {
+            s.ebookViewer.destroy();
             s.state(cml.Const.State.Personalised);
         };
 
@@ -109,6 +115,39 @@
             //TODO Others
         };
         s.init();
+    };
+
+    cml.EbookViewerVm = function() {
+        var s = this;
+
+        s.relatedResource = ko.observable(null);
+
+        s.viewer = false;
+
+        function destroyViewer() {
+            closePdfFile();
+            s.viewer = false;
+        };
+
+        function loadViewer(url) {
+            loadPdfFile(url);
+            s.viewer = true;
+        };
+
+        s.init = function(res) {
+            if (s.viewer) {
+                s.destroy();
+            }
+
+            s.relatedResource(res);
+
+            loadViewer(res.documentUrl());
+        };
+
+        s.destroy = function() {
+            s.relatedResource(null);
+            destroyViewer();
+        };
     };
 
     cml.VideoPlayerVm = function() {

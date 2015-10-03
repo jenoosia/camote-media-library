@@ -13,7 +13,7 @@ var CmlSampleData = {
         "thumbnailUrl": "images/image.png",
         "tags": ["fantasy", "action", "fiction"],
         "type": "document",
-        "documentUrl": "/documents/mistborn.pdf",
+        "documentUrl": "/pdfs/mistborn.pdf",
         "dashUrl": null,
         "hlsUrl": null,
         "posterUrl": null
@@ -36,7 +36,7 @@ var CmlSampleData = {
         "thumbnailUrl": "/images/mistborn.jpg",
         "tags": ["fantasy", "action", "fiction"],
         "type": "document",
-        "documentUrl": "/documents/mistborn.pdf",
+        "documentUrl": "/pdfs/mistborn.pdf",
         "dashUrl": null,
         "hlsUrl": null,
         "posterUrl": null
@@ -59,7 +59,7 @@ var CmlSampleData = {
         "thumbnailUrl": "/images/mistborn.jpg",
         "tags": ["fantasy", "action", "fiction"],
         "type": "document",
-        "documentUrl": "/documents/mistborn.pdf",
+        "documentUrl": "/pdfs/mistborn.pdf",
         "dashUrl": null,
         "hlsUrl": null,
         "posterUrl": null
@@ -112,7 +112,7 @@ var CmlSampleData2 = {
                 "japan"
             ],
             "type": "document",
-            "documentUrl": "/documents/japan.pdf",
+            "documentUrl": "/pdfs/ls01.pdf",
             "dashUrl": null,
             "hlsUrl": null,
             "posterUrl": null
@@ -160,7 +160,7 @@ var CmlSampleData2 = {
                 "japan"
             ],
             "type": "document",
-            "documentUrl": "/documents/day-in-the-life-of-japan.pdf",
+            "documentUrl": "/pdfs/ls13.pdf",
             "dashUrl": null,
             "hlsUrl": null,
             "posterUrl": null
@@ -177,7 +177,7 @@ var CmlSampleData2 = {
                 "japan"
             ],
             "type": "document",
-            "documentUrl": "/documents/wanderlust.pdf",
+            "documentUrl": "/pdfs/ls20.pdf",
             "dashUrl": null,
             "hlsUrl": null,
             "posterUrl": null
@@ -226,7 +226,7 @@ var CmlSampleData2 = {
                 "travel"
             ],
             "type": "document",
-            "documentUrl": "/documents/food-and-travel.pdf",
+            "documentUrl": "/pdfs/ls01.pdf",
             "dashUrl": null,
             "hlsUrl": null,
             "posterUrl": null
@@ -241,7 +241,7 @@ var CmlSampleData2 = {
                 "singapore"
             ],
             "type": "document",
-            "documentUrl": "/documents/images.pdf",
+            "documentUrl": "/pdfs/ls13.pdf",
             "dashUrl": null,
             "hlsUrl": null,
             "posterUrl": null
@@ -290,7 +290,7 @@ var CmlSampleData2 = {
                 "culture"
             ],
             "type": "document",
-            "documentUrl": "/documents/travel-and-leisure.pdf",
+            "documentUrl": "/pdfs/ls20.pdf",
             "dashUrl": null,
             "hlsUrl": null,
             "posterUrl": null
@@ -305,7 +305,7 @@ var CmlSampleData2 = {
                 "japan"
             ],
             "type": "document",
-            "documentUrl": "/documents/japan.pdf",
+            "documentUrl": "/pdfs/ls01.pdf",
             "dashUrl": null,
             "hlsUrl": null,
             "posterUrl": null
