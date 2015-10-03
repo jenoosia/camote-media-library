@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <title></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="semantic-ui/semantic.css" />
+
+    <link rel="stylesheet" type="text/css" href="pdfjs/viewer.css"/>
+    <link rel="resource" type="application/l10n" href="pdfjs/locale/locale.properties"/>
+
+    <link rel="stylesheet" type="text/css" href="css/cml.css" />
+</head>
+<body id="theBody">
+
+<div class="ui grid container cml-header">
+    <div class="row">
+        <div class="ten wide column">
+            <h1>Changi Media Library</h1>
+        </div>
+        <div class="six wide column">
+            <i class="plane icon"></i>
+            Your Flight
+        </div>
+    </div>
+    <div class="row">
+        <div class="ui secondary pointing three item menu">
+            <a class="active item">Home</a>
+            <a class="item">Watch</a>
+            <a class="item">Read</a>
+        </div>
+    </div>
+</div>
+
+<div class="ui grid container cml-body" style="display: none;" data-bind="visible: section() == 'Home'">
+
+    <!-- Splash Page -->
+    <div class="row" data-bind="visible: state() == 'Welcome'">
+        <div class="sixteen wide column">
+            <p>Welcome to Changi Media Library!</p>
+            <p>Enter your flight no. to get an experience tailored for you.</p>
+
+            <form class="ui form">
+                <div class="field">
+                    <input type="text" placeholder="Flight No.">
+                </div>
+                <buton class="ui purple button" data-bind="click: doUseFlightNumber">Go</buton>
+            </form>
+        </div>
+    </div>
+
+    <!-- Personalised View -->
+    <div class="row" data-bind="visible: state() == 'Personalised'">
+        <div class="sixteen wide column">
+            <div class="ui grid">
+                <!-- Personalised Results -->
+                <div class="row">
+                    <div class="eight wide column">
+                        <p>
+                            We've noted down your flight details! You can view them at any time through "Your Flight".
+                        </p>
+                        <p>
+                            We've also noticed that you're going to Tokyo, Japan! We've looked through our catalogue and
+                            we've found some resources that might interest you!
+                        </p>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui segment">
+                            <div class="ui statistics">
+                                <div class="statistic">
+                                    <div class="value" data-bind="text: flightInfo.gate"></div>
+                                    <div class="label">
+                                        Gate No.
+                                    </div>
+                                </div>
+                                <div class="statistic">
+                                    <div class="value" data-bind="text: flightInfo.scheduled"></div>
+                                    <div class="label">
+                                        Departure Time
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui red basic label">Boarding starts at 8:00 PM (45 minutes from now)</div>
+                            <div>Gate closes at 8:30 PM</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Personalised Listing -->
+                <div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui secondary pointing menu">
+                            <div class="ui item">
+                                <h3 class="ui header">Your Personalised Travel Guide</h3>
+                            </div>
+                            <div class="ui right item">
+                                <button class="ui purple button">
+                                    <i class="filter icon"></i>
+                                    Filter
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="ui segment">
+                            <div class="ui labels" data-bind="foreach: recommendedTags">
+                                <a class="ui large label" href="javascript:void(0)"
+                                   data-bind="css: {'violet':active}">
+                                    <span data-bind="text: tag"></span>
+                                    <div class="detail">x</div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ui three cards" data-bind="foreach: recommendedResourcesView">
+                            <a class="ui card" href="javascript:void(0)" data-bind="click: $parent.doViewResource">
+                                <div class="image">
+                                    <img data-bind="attr: {'src': thumbnailUrl}">
+                                </div>
+                                <div class="content">
+                                    <div class="header" data-bind="text: name"></div>
+                                    <div class="meta" data-bind="text: duration"></div>
+                                    <div class="content" data-bind="text: description"></div>
+                                </div>
+                                <div class="ui bottom attached blue button" data-bind="css: {'blue':typeIsVideo(),'green':!typeIsVideo()}">
+                                    <i class="icon" data-bind="css: {'video':typeIsVideo(),'book':!typeIsVideo()}"></i>
+                                    <span data-bind="text: typeIsVideo() ? 'Watch Now' : 'Read Now'"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Page -->
+    <div class="row" data-bind="visible: state() == 'VideoPlayer'">
+        <div class="sixteen wide column">
+            <button class="ui orange basic button" data-bind="click: doVideoPlayerBack">
+                <i class="chevron left icon"></i>
+                Go Back
+            </button>
+            <div class="ui segment">
+                <div id="thePlayer" class="cml video-player"></div>
+                <!-- ko if: videoPlayer.relatedResource() != null -->
+                <h2 class="ui header" data-bind="text: videoPlayer.relatedResource().name()"></h2>
+                <p class="ui content" data-bind="text: videoPlayer.relatedResource().duration()"></p>
+                <p class="ui content" data-bind="text: videoPlayer.relatedResource().description()"></p>
+                <!-- /ko -->
+            </div>
+            <button class="ui orange basic button" data-bind="click: doVideoPlayerBack">
+                <i class="chevron left icon"></i>
+                Go Back
+            </button>
+        </div>
+    </div>
+
+    <div class="row" data-bind="visible: state() == 'EbookViewer'">
+        <div class="sixteen wide column">
+            <div id="outerContainer">
+                <div id="mainContainer">
+                    <div class="toolbar">
+                        <div id="toolbarContainer">
+                            <div id="toolbarViewer">
+                                <div id="toolbarViewerLeft">
+                                    <div class="splitToolbarButton">
+                                        <button class="toolbarButton pageUp" title="Previous Page" id="previous" tabindex="13" data-l10n-id="previous">
+                                            <span data-l10n-id="previous_label">Previous</span>
+                                        </button>
+                                        <div class="splitToolbarButtonSeparator"></div>
+                                        <button class="toolbarButton pageDown" title="Next Page" id="next" tabindex="14" data-l10n-id="next">
+                                            <span data-l10n-id="next_label">Next</span>
+                                        </button>
+                                    </div>
+                                    <label id="pageNumberLabel" class="toolbarLabel" for="pageNumber" data-l10n-id="page_label">Page: </label>
+                                    <input type="number" id="pageNumber" class="toolbarField pageNumber" value="1" size="4" min="1" tabindex="15">
+                                    <span id="numPages" class="toolbarLabel"></span>
+                                    <div class="toolbarButtonSpacer"></div>
+                                    <div class="splitToolbarButton">
+                                        <button id="zoomOut" class="toolbarButton zoomOut" title="Zoom Out" tabindex="21" data-l10n-id="zoom_out">
+                                            <span data-l10n-id="zoom_out_label">Zoom Out</span>
+                                        </button>
+                                        <div class="splitToolbarButtonSeparator"></div>
+                                        <button id="zoomIn" class="toolbarButton zoomIn" title="Zoom In" tabindex="22" data-l10n-id="zoom_in">
+                                            <span data-l10n-id="zoom_in_label">Zoom In</span>
+                                        </button>
+                                    </div>
+                  <span id="scaleSelectContainer" class="dropdownToolbarButton">
+                     <select id="scaleSelect" title="Zoom" tabindex="23" data-l10n-id="zoom">
+                         <option id="pageAutoOption" title="" value="auto" selected="selected" data-l10n-id="page_scale_auto">Automatic Zoom</option>
+                         <option id="pageActualOption" title="" value="page-actual" data-l10n-id="page_scale_actual">Actual Size</option>
+                         <option id="pageFitOption" title="" value="page-fit" data-l10n-id="page_scale_fit">Fit Page</option>
+                         <option id="pageWidthOption" title="" value="page-width" data-l10n-id="page_scale_width">Full Width</option>
+                         <option id="customScaleOption" title="" value="custom"></option>
+                         <option title="" value="0.5" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 50 }'>50%</option>
+                         <option title="" value="0.75" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 75 }'>75%</option>
+                         <option title="" value="1" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 100 }'>100%</option>
+                         <option title="" value="1.25" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 125 }'>125%</option>
+                         <option title="" value="1.5" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 150 }'>150%</option>
+                         <option title="" value="2" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 200 }'>200%</option>
+                         <option title="" value="3" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 300 }'>300%</option>
+                         <option title="" value="4" data-l10n-id="page_scale_percent" data-l10n-args='{ "scale": 400 }'>400%</option>
+                     </select>
+                  </span>
+                                </div>
+                            </div>
+                            <div id="loadingBar">
+                                <div class="progress">
+                                    <div class="glimmer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="viewerContainer" tabindex="0">
+                        <div id="viewer" class="pdfViewer"></div>
+                    </div>
+
+                    <div id="errorWrapper" hidden='true'>
+                        <div id="errorMessageLeft">
+                            <span id="errorMessage"></span>
+                            <button id="errorShowMore" data-l10n-id="error_more_info">
+                                More Information
+                            </button>
+                            <button id="errorShowLess" data-l10n-id="error_less_info" hidden='true'>
+                                Less Information
+                            </button>
+                        </div>
+                        <div id="errorMessageRight">
+                            <button id="errorClose" data-l10n-id="error_close">
+                                Close
+                            </button>
+                        </div>
+                        <div class="clearBoth"></div>
+                        <textarea id="errorMoreInfo" hidden='true' readonly="readonly"></textarea>
+                    </div>
+                </div> <!-- mainContainer -->
+            </div> <!-- outerContainer -->
+        </div>
+    </div>
+
+</div>
+
+
+<!-- SCRIPT -->
+<script src="js-lib/jquery.js"></script>
+<script src="js-lib/json3.min.js"></script>
+<script src="js-lib/knockout-3.3.0.js"></script>
+<script src="semantic-ui/semantic.js"></script>
+
+<script src="bitdash/bitdash.min.js"></script>
+
+<script src="pdfjs/l10n.js"></script>
+<script src="pdfjs/pdfjs/pdf.js"></script>
+<script src="pdfjs/viewer.js"></script>
+
+<script src="js/cml.js"></script>
+<script src="js/cml-data.js"></script>
+
+</body>
+</html>
