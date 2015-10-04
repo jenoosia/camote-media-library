@@ -18,27 +18,70 @@
 </head>
 <body id="theBody">
 
+<div class="ui modal" id="modalFlightInfo">
+    <div class="header">
+        Your Flight
+        <span data-bind="text: flightInfo.filled() ? '- ' + flightInfo.flightNumber() : ''"></span>
+    </div>
+    <div class="content">
+        <div class="ui segment">
+            <div class="ui statistics">
+                <div class="statistic">
+                    <div class="value" data-bind="text: flightInfo.gate"></div>
+                    <div class="label">
+                        Gate No.
+                    </div>
+                </div>
+                <div class="statistic">
+                    <div class="value" data-bind="text: flightInfo.scheduled"></div>
+                    <div class="label">
+                        Departure Time
+                    </div>
+                </div>
+            </div>
+            <div class="ui orange basic label" style="margin-top: 5px;">Boarding starts at 17:50, 45 minutes from now.</div>
+            <div class="ui red basic label" style="margin-top: 5px;">Gate closes at 18:15</div>
+        </div>
+    </div>
+</div>
+
 <div class="ui grid container cml-header">
     <div class="row">
         <div class="sixteen wide column">
-            <div class="ui secondary menu">
+            <div class="custom-cml-header">
+                <img src="images/changi-banner-gold-e01.jpg">
+                <div class="your-flight-section">
+                    <button class="ui large orange button" style="display: none;"
+                            data-bind="visible: !flightInfo.filled()">
+                        <i class="plane icon"></i> Your Flight
+                    </button>
+                    <div class="ui labeled button" tabindex="0" style="display: none;"
+                         data-bind="visible: flightInfo.filled, click: doShowFlightInfoModal">
+                        <div class="ui large orange button">
+                            <i class="plane icon"></i> Your Flight
+                        </div>
+                        <a class="ui basic label" data-bind="text: flightInfo.flightNumber"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="ui secondary menu" style="display: none;">
                 <div class="ui item">
                     <h1 class="ui header">
-                        <span class="ui purple header">CH</span>angi <span class="ui purple header">A</span>irport
+                        <span class="ui purple header">CHA</span>ngi
                         <span class="ui purple header">M</span>edia <span class="ui purple header">P</span>ortal
                     </h1>
                 </div>
                 <div class="ui right item">
-                    <div class="ui statistic">
+                    <div class="ui statistic your-flight">
                         <div class="value"><i class="plane icon"></i></div>
                         <div class="label">Your Flight</div>
                     </div>
                 </div>
             </div>
-            <div class="ui secondary pointing three item menu">
-                <a class="active item">Home</a>
-                <a class="item">Watch</a>
-                <a class="item">Read</a>
+            <div class="ui secondary purple pointing three item menu">
+                <a class="item" data-bind="click: doNavHome, css: {'active':state()!='Watch' && state()!='Read'}">Home</a>
+                <a class="item" data-bind="click: doNavWatch, css: {'active':state()=='Watch'}">Watch</a>
+                <a class="item" data-bind="click: doNavRead, css: {'active':state()=='Read'}">Read</a>
             </div>
         </div>
     </div>
@@ -49,20 +92,58 @@
     <!-- Splash Page -->
     <div class="row" data-bind="visible: state() == 'Welcome'">
         <div class="sixteen wide column">
-            <div class="">
-                <h2 class="ui header">
-                    There's something here for every traveler.
-                </h2>
-
-                <div class="ui segment" style="width: 50%; margin: 0 auto;">
-                    <h3 class="ui header">First, what's your Flight Number?</h3>
-                    <form class="ui form" style="text-align: center;">
-                        <div class="field">
-                            <input type="text" placeholder="Flight No.">
+            <div class="cml-splash-section">
+                <div class="ui grid" style="display: none;">
+                    <div class="ten wide column">
+                        <h1 class="ui header" style="width: 90%; margin: 10px auto 20px auto;">
+                            <div style="text-align: left; padding-left: 20px;">Catch up on movies,</div>
+                            <div style="text-align: right;">Watch a travel documentary,</div>
+                            <div style="text-align: left;">Read a magazine-</div>
+                            <div style="text-align: center;">anywhere here in Changi.</div>
+                        </h1>
+                    </div>
+                    <div class="six wide column">
+                        <div class="ui raised segment" style="width: 90%; margin: 0 auto;">
+                            <h3 class="ui header">First, what's your Flight Number?</h3>
+                            <div style="text-align: center;">
+                                <div class="ui input" style=" margin-bottom: 5px;">
+                                    <input type="text" placeholder="Flight No."
+                                           data-bind="value: flightNumberInput">
+                                </div>
+                                <br>
+                                <button class="ui big orange button" style="margin-bottom: 10px;"
+                                        data-bind="click: doUseFlightNumber">Go</button>
+                                <br>
+                                <a href="javascript:void(0)" style="padding-top: 5px; text-decoration: underline;"
+                                   data-bind="click: doSkipFlightNumber">or go straight to the Nook!</a>
+                            </div>
                         </div>
-                        <button class="ui purple button" data-bind="click: doUseFlightNumber">Go</button>
-                    </form>
+                    </div>
                 </div>
+
+                <h1 class="ui header" style="width: 500px; margin: 10px auto 20px auto;">
+                    <div style="text-align: left; padding-left: 20px;">Catch up on movies,</div>
+                    <div style="text-align: right;">Watch a travel documentary;</div>
+                    <div style="text-align: left;">Read a magazine-</div>
+                    <div style="text-align: center;">anywhere in Changi.</div>
+                </h1>
+
+                <div class="ui raised segment" style="width: 350px; margin: 0 auto;">
+                    <h3 class="ui header">First, what's your Flight Number?</h3>
+                    <div style="text-align: center;">
+                        <div class="ui input" style=" margin-bottom: 5px;">
+                            <input type="text" placeholder="Flight No."
+                                   data-bind="value: flightNumberInput">
+                        </div>
+                        <br>
+                        <button class="ui big orange button" style="margin-bottom: 10px;"
+                                data-bind="click: doUseFlightNumber">Go</button>
+                        <br>
+                        <a href="javascript:void(0)" style="padding-top: 5px; text-decoration: underline;"
+                           data-bind="click: doSkipFlightNumber">or go straight to the Nook!</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -73,16 +154,7 @@
             <div class="ui grid">
                 <!-- Personalised Results -->
                 <div class="row">
-                    <div class="eight wide column">
-                        <p>
-                            We've noted down your flight details! You can view them at any time through "Your Flight".
-                        </p>
-                        <p>
-                            We've also noticed that you're going to Tokyo, Japan! We've looked through our catalogue and
-                            we've found some resources that might interest you!
-                        </p>
-                    </div>
-                    <div class="eight wide column">
+                    <div class="six wide column">
                         <div class="ui segment">
                             <div class="ui statistics">
                                 <div class="statistic">
@@ -98,9 +170,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="ui red basic label">Boarding starts at 8:00 PM (45 minutes from now)</div>
-                            <div>Gate closes at 8:30 PM</div>
+                            <div class="ui orange basic label" style="margin-top: 5px;">Boarding starts at 17:50, 45 minutes from now.</div>
+                            <div class="ui red basic label" style="margin-top: 5px;">Gate closes at 18:15</div>
                         </div>
+                    </div>
+                    <div class="ten wide column">
+                        <p>
+                            We've noted down your flight details! You can view them at any time through "Your Flight".
+                        </p>
+                        <p>
+                            We've also noticed that you're going to Tokyo, Japan! We've looked through our catalogue and
+                            we've found some resources that might interest you!
+                        </p>
                     </div>
                 </div>
                 <!-- Personalised Listing -->
@@ -108,27 +189,215 @@
                     <div class="sixteen wide column">
                         <div class="ui secondary pointing menu">
                             <div class="ui item">
-                                <h3 class="ui header">Your Personalised Travel Guide</h3>
+                                <h3 class="ui header">Personalised For You</h3>
                             </div>
                             <div class="ui right item">
-                                <button class="ui purple button">
+                                <button class="ui button"
+                                        data-bind="css: {'orange':!recommendedFilterShown()}, click: doToggleRecommendedFilter">
                                     <i class="filter icon"></i>
-                                    Filter
+                                    <span data-bind="text: recommendedFilterBtnText">Filter</span>
                                 </button>
                             </div>
                         </div>
 
-                        <div class="ui segment">
+                        <div class="ui segment" data-bind="visible: recommendedFilterShown">
                             <div class="ui labels" data-bind="foreach: recommendedTags">
                                 <a class="ui large label" href="javascript:void(0)"
-                                   data-bind="css: {'violet':active}">
+                                   data-bind="css: {'violet':active}, click: $parent.toggleRecommendedTag">
+                                    <i class="icon plus" data-bind="visible: !active()"></i>
                                     <span data-bind="text: tag"></span>
-                                    <div class="detail">x</div>
+                                    <i class="icon delete" data-bind="visible: active"></i>
                                 </a>
                             </div>
                         </div>
 
-                        <div class="ui three cards" data-bind="foreach: recommendedResourcesView">
+                        <div class="ui four doubling cards" data-bind="foreach: recommendedResourcesView">
+                            <a class="ui card" href="javascript:void(0)" data-bind="click: $parent.doViewResource">
+                                <div class="image">
+                                    <img data-bind="attr: {'src': thumbnailUrl}">
+                                </div>
+                                <div class="content">
+                                    <div class="header" data-bind="text: name"></div>
+                                    <div class="meta" data-bind="text: durationText"></div>
+                                    <div class="content" data-bind="text: description"></div>
+                                </div>
+                                <div class="ui bottom attached blue button" data-bind="css: {'blue':typeIsVideo(),'green':!typeIsVideo()}">
+                                    <i class="icon" data-bind="css: {'video':typeIsVideo(),'book':!typeIsVideo()}"></i>
+                                    <span data-bind="text: typeIsVideo() ? 'Watch Now' : 'Read Now'"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Popular Listing -->
+                <div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui secondary pointing menu">
+                            <div class="ui item">
+                                <h3 class="ui header">Popular Videos and Ebooks</h3>
+                            </div>
+                        </div>
+
+                        <div class="ui four doubling cards" data-bind="foreach: popularResources">
+                            <a class="ui card" href="javascript:void(0)" data-bind="click: $parent.doViewResource">
+                                <div class="image">
+                                    <img data-bind="attr: {'src': thumbnailUrl}">
+                                </div>
+                                <div class="content">
+                                    <div class="header" data-bind="text: name"></div>
+                                    <div class="meta" data-bind="text: durationText"></div>
+                                    <div class="content" data-bind="text: description"></div>
+                                </div>
+                                <div class="ui bottom attached blue button" data-bind="css: {'blue':typeIsVideo(),'green':!typeIsVideo()}">
+                                    <i class="icon" data-bind="css: {'video':typeIsVideo(),'book':!typeIsVideo()}"></i>
+                                    <span data-bind="text: typeIsVideo() ? 'Watch Now' : 'Read Now'"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Listing -->
+                <div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui secondary pointing menu">
+                            <div class="ui item">
+                                <h3 class="ui header">New Videos and Ebooks</h3>
+                            </div>
+                        </div>
+
+                        <div class="ui four doubling cards" data-bind="foreach: newResources">
+                            <a class="ui card" href="javascript:void(0)" data-bind="click: $parent.doViewResource">
+                                <div class="image">
+                                    <img data-bind="attr: {'src': thumbnailUrl}">
+                                </div>
+                                <div class="content">
+                                    <div class="header" data-bind="text: name"></div>
+                                    <div class="meta" data-bind="text: durationText"></div>
+                                    <div class="content" data-bind="text: description"></div>
+                                </div>
+                                <div class="ui bottom attached blue button" data-bind="css: {'blue':typeIsVideo(),'green':!typeIsVideo()}">
+                                    <i class="icon" data-bind="css: {'video':typeIsVideo(),'book':!typeIsVideo()}"></i>
+                                    <span data-bind="text: typeIsVideo() ? 'Watch Now' : 'Read Now'"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Default Popular/New View -->
+    <div class="row" data-bind="visible: state() == 'GenericPopularNew'">
+        <div class="sixteen wide column">
+            <div class="ui grid">
+                <!-- Popular Listing -->
+                <div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui secondary pointing menu">
+                            <div class="ui item">
+                                <h3 class="ui header">Popular Videos and Ebooks</h3>
+                            </div>
+                        </div>
+
+                        <div class="ui four doubling cards" data-bind="foreach: popularResources">
+                            <a class="ui card" href="javascript:void(0)" data-bind="click: $parent.doViewResource">
+                                <div class="image">
+                                    <img data-bind="attr: {'src': thumbnailUrl}">
+                                </div>
+                                <div class="content">
+                                    <div class="header" data-bind="text: name"></div>
+                                    <div class="meta" data-bind="text: durationText"></div>
+                                    <div class="content" data-bind="text: description"></div>
+                                </div>
+                                <div class="ui bottom attached blue button" data-bind="css: {'blue':typeIsVideo(),'green':!typeIsVideo()}">
+                                    <i class="icon" data-bind="css: {'video':typeIsVideo(),'book':!typeIsVideo()}"></i>
+                                    <span data-bind="text: typeIsVideo() ? 'Watch Now' : 'Read Now'"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Listing -->
+                <div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui secondary pointing menu">
+                            <div class="ui item">
+                                <h3 class="ui header">New Videos and Ebooks</h3>
+                            </div>
+                        </div>
+
+                        <div class="ui four doubling cards" data-bind="foreach: newResources">
+                            <a class="ui card" href="javascript:void(0)" data-bind="click: $parent.doViewResource">
+                                <div class="image">
+                                    <img data-bind="attr: {'src': thumbnailUrl}">
+                                </div>
+                                <div class="content">
+                                    <div class="header" data-bind="text: name"></div>
+                                    <div class="meta" data-bind="text: durationText"></div>
+                                    <div class="content" data-bind="text: description"></div>
+                                </div>
+                                <div class="ui bottom attached blue button" data-bind="css: {'blue':typeIsVideo(),'green':!typeIsVideo()}">
+                                    <i class="icon" data-bind="css: {'video':typeIsVideo(),'book':!typeIsVideo()}"></i>
+                                    <span data-bind="text: typeIsVideo() ? 'Watch Now' : 'Read Now'"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Watch View -->
+    <div class="row" data-bind="visible: state() == 'Watch'">
+        <div class="sixteen wide column">
+            <div class="ui grid">
+                <!-- Watch Listing -->
+                <div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui secondary pointing menu">
+                            <div class="ui item">
+                                <h3 class="ui header">All Videos</h3>
+                            </div>
+                        </div>
+
+                        <div class="ui four doubling cards" data-bind="foreach: videoResources">
+                            <a class="ui card" href="javascript:void(0)" data-bind="click: $parent.doViewResource">
+                                <div class="image">
+                                    <img data-bind="attr: {'src': thumbnailUrl}">
+                                </div>
+                                <div class="content">
+                                    <div class="header" data-bind="text: name"></div>
+                                    <div class="meta" data-bind="text: durationText"></div>
+                                    <div class="content" data-bind="text: description"></div>
+                                </div>
+                                <div class="ui bottom attached blue button" data-bind="css: {'blue':typeIsVideo(),'green':!typeIsVideo()}">
+                                    <i class="icon" data-bind="css: {'video':typeIsVideo(),'book':!typeIsVideo()}"></i>
+                                    <span data-bind="text: typeIsVideo() ? 'Watch Now' : 'Read Now'"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Read View -->
+    <div class="row" data-bind="visible: state() == 'Read'">
+        <div class="sixteen wide column">
+            <div class="ui grid">
+                <!-- Watch Listing -->
+                <div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui secondary pointing menu">
+                            <div class="ui item">
+                                <h3 class="ui header">All Ebooks</h3>
+                            </div>
+                        </div>
+
+                        <div class="ui four doubling cards" data-bind="foreach: documentResources">
                             <a class="ui card" href="javascript:void(0)" data-bind="click: $parent.doViewResource">
                                 <div class="image">
                                     <img data-bind="attr: {'src': thumbnailUrl}">
@@ -276,7 +545,6 @@
     </div>
 
 </div>
-
 
 <!-- SCRIPT -->
 <script src="js-lib/jquery.js"></script>

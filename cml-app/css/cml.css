@@ -1,3 +1,37 @@
 .cml.video-player {
     margin: 0 auto;
 }
+
+.ui.statistic.your-flight * {
+    cursor: pointer;
+    /*color: #a333c8;*/
+    color: #f2711c;
+}
+
+.custom-cml-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-cml-header img {
+    width: 100%;
+    min-width: 580px;
+}
+
+.custom-cml-header .your-flight-section {
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+}
+
+.cml-splash-section {
+    background-image: url('../images/cagswooshbg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 600px;
+}
+
+a.ui.card .content {
+    color: #333333;
+}

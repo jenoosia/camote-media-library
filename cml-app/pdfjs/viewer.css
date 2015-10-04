@@ -326,11 +326,12 @@ html[dir='rtl'] .innerCenter {
 }
 
 #outerContainer {
-    width: 100%;
+    width: 80%;
+    margin: 10px auto 0 auto;
     height: 600px;
     position: relative;
     border: 1px solid #C7C7C7;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 
 #sidebarContainer {
