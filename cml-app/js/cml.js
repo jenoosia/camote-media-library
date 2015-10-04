@@ -97,6 +97,10 @@
             $('#modalFlightInfo').modal('show');
         };
 
+        s.doShowFlightWarningModal = function() {
+            $('#modalFlightWarning').modal('show');
+        };
+
         s.doUseFlightNumber = function() {
             //TODO Integration with API
 

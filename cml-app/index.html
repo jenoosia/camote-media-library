@@ -45,12 +45,34 @@
     </div>
 </div>
 
+<div class="ui modal" id="modalFlightWarning">
+    <div class="content">
+        <div class="ui red basic massive label" style="margin-top: 5px;">
+            Your flight is about to depart in 20 minutes.
+            Please proceed to Gate No. <span data-bind="text: flightInfo.gate"></span> to board your flight.
+            Gate closes in 10 minutes.
+        </div>
+    </div>
+</div>
+
 <div class="ui grid container cml-header">
     <div class="row">
         <div class="sixteen wide column">
             <div class="custom-cml-header">
                 <img src="images/changi-banner-gold-e01.jpg">
+                <div class="you-account-section" style="position:absolute;right:1em;top:1em;">
+                    <button class="ui purple mini button"
+                            data-bind="">
+                        <i class="user icon"></i> Your Account
+                    </button>
+                </div>
                 <div class="your-flight-section">
+                    <div class="ui labeled button" tabindex="0" style="opacity:0;cursor:default;"
+                         data-bind="click: doShowFlightWarningModal">
+                        <div class="ui large orange button" style="cursor:default;">
+                            Warning
+                        </div>
+                    </div>
                     <button class="ui large orange button" style="display: none;"
                             data-bind="visible: !flightInfo.filled()">
                         <i class="plane icon"></i> Your Flight
@@ -426,11 +448,17 @@
                 <i class="chevron left icon"></i>
                 Go Back
             </button>
+            <div style="float:right;">
+                <button class="ui orange button" data-bind="click: ">
+                    <i class="chevron in cart icon"></i>
+                    Purchase
+                </button>
+            </div>
             <div class="ui segment">
                 <div id="thePlayer" class="cml video-player"></div>
                 <!-- ko if: videoPlayer.relatedResource() != null -->
                 <h2 class="ui header" data-bind="text: videoPlayer.relatedResource().name()"></h2>
-                <p class="ui content" data-bind="text: videoPlayer.relatedResource().duration()"></p>
+                <p class="ui content" data-bind="text: videoPlayer.relatedResource().durationText()"></p>
                 <p class="ui content" data-bind="text: videoPlayer.relatedResource().description()"></p>
                 <!-- /ko -->
             </div>
@@ -447,6 +475,12 @@
                 <i class="chevron left icon"></i>
                 Go Back
             </button>
+            <div style="float:right;">
+                <button class="ui orange button" data-bind="click: ">
+                    <i class="chevron in cart icon"></i>
+                    Purchase
+                </button>
+            </div>
             <div id="outerContainer">
                 <div id="mainContainer">
                     <div class="toolbar">
@@ -532,7 +566,7 @@
             <div class="ui segment">
                 <!-- ko if: ebookViewer.relatedResource() != null -->
                 <h2 class="ui header" data-bind="text: ebookViewer.relatedResource().name()"></h2>
-                <p class="ui content" data-bind="text: ebookViewer.relatedResource().duration()"></p>
+                <p class="ui content" data-bind="text: ebookViewer.relatedResource().durationText()"></p>
                 <p class="ui content" data-bind="text: ebookViewer.relatedResource().description()"></p>
                 <!-- /ko -->
             </div>
